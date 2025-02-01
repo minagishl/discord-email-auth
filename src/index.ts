@@ -121,6 +121,21 @@ app.get("/auth/google/callback", async (c) => {
 		return c.json({ error: "Email domain not allowed" }, 403);
 	}
 
+	const userResponse = await fetch(
+		`${c.env.DISCORD_API_BASE}/guilds/${c.env.DISCORD_GUILD_ID}/members/${discordUserId}`,
+		{
+			method: "GET",
+			headers: {
+				Authorization: `Bot ${c.env.DISCORD_BOT_TOKEN}`,
+				"Content-Type": "application/json",
+			},
+		},
+	);
+
+	if (userResponse.status === 404) {
+		return c.json({ error: "User not found" }, 404);
+	}
+
 	// Discord role assignment
 	const roleResponse = await fetch(
 		`${c.env.DISCORD_API_BASE}/guilds/${c.env.DISCORD_GUILD_ID}/members/${discordUserId}/roles/${c.env.DISCORD_ROLE_ID}`,
