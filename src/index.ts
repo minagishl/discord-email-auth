@@ -3,6 +3,7 @@ import { sign, verify } from "hono/jwt";
 import { getCookie, setCookie, deleteCookie } from "hono/cookie";
 import { generateState, validateState } from "./utils/csrf";
 import { verifyGoogleIdToken } from "./utils/token";
+import { fetchWithTimeout } from "./utils/fetch";
 
 type Bindings = {
 	DISCORD_CLIENT_ID: string;
@@ -203,11 +204,7 @@ app.get("/auth/google/callback", async (c) => {
 			return c.json({ error: "Email domain not allowed" }, 403);
 		}
 
-		// Set a timeout for requests to the Discord API
-		const controller = new AbortController();
-		const timeout = setTimeout(() => controller.abort(), 5000);
-
-		const userResponse = await fetch(
+		const userResponse = await fetchWithTimeout(
 			`${c.env.DISCORD_API_BASE}/guilds/${c.env.DISCORD_GUILD_ID}/members/${discordUserId}`,
 			{
 				method: "GET",
@@ -216,11 +213,9 @@ app.get("/auth/google/callback", async (c) => {
 					"Content-Type": "application/json",
 					Accept: "application/json",
 				},
-				signal: controller.signal,
+				timeout: 5000,
 			},
 		);
-
-		clearTimeout(timeout);
 
 		if (userResponse.status === 404) {
 			return c.json({ error: "User not found" }, 404);
