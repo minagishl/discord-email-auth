@@ -1,7 +1,7 @@
 {
 	"editor.formatOnSave": true,
-	"editor.defaultFormatter": "biomejs.biome"
-    ,"files.associations": {
-        "*.vars": "properties"
-    }
+	"editor.defaultFormatter": "biomejs.biome",
+	"files.associations": {
+		"*.vars*": "properties"
+	}
 }
