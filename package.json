@@ -1,0 +1,17 @@
+{
+	"name": "discord-mail-auth",
+	"scripts": {
+		"dev": "wrangler dev",
+		"deploy": "wrangler deploy --minify",
+		"format": "biome format",
+		"format:write": "biome format --write"
+	},
+	"dependencies": {
+		"hono": "^4.6.20"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
+		"@cloudflare/workers-types": "^4.20250109.0",
+		"wrangler": "^3.101.0"
+	}
+}
