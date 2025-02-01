@@ -1,4 +1,4 @@
-# Discord EMail Auth
+# Discord Email Auth
 
 This is a lightweight application that assigns roles to specific email addresses using Cloudflare Workers and Hono.
 
