@@ -1,4 +1,5 @@
 import { Hono, type Context } from "hono";
+import { secureHeaders } from "hono/secure-headers";
 import { sign, verify } from "hono/jwt";
 import { getCookie, setCookie, deleteCookie } from "hono/cookie";
 import { generateState, validateState } from "./utils/csrf";
@@ -20,6 +21,9 @@ type Bindings = {
 };
 
 const app = new Hono<{ Bindings: Bindings }>();
+
+// Security Header Settings
+app.use(secureHeaders());
 
 app.get("/", async (c: Context) => {
 	const state = await generateState();
