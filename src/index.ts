@@ -1,6 +1,7 @@
 import { Hono, type Context } from "hono";
-import { decode, sign, verify } from "hono/jwt";
+import { sign, verify } from "hono/jwt";
 import { getCookie, setCookie, deleteCookie } from "hono/cookie";
+import { createRemoteJWKSet, jwtVerify } from "jose";
 
 type Bindings = {
 	DISCORD_CLIENT_ID: string;
@@ -18,6 +19,9 @@ type Bindings = {
 
 const app = new Hono<{ Bindings: Bindings }>();
 
+// JWKS URL
+const GOOGLE_JWKS_URL = "https://www.googleapis.com/oauth2/v3/certs";
+
 // Function to generate state for CSRF protection
 async function generateState(): Promise<string> {
 	const buffer = new Uint8Array(32);
@@ -33,6 +37,23 @@ function validateState(c: Context, state: string): boolean {
 	const savedState = getCookie(c, "oauth_state");
 	deleteCookie(c, "oauth_state");
 	return savedState === state;
+}
+
+// Verify the Google token
+async function verifyGoogleIdToken(token: string, clientId: string) {
+	try {
+		const JWKS = createRemoteJWKSet(new URL(GOOGLE_JWKS_URL));
+
+		const { payload } = await jwtVerify(token, JWKS, {
+			issuer: ["https://accounts.google.com", "accounts.google.com"],
+			audience: clientId,
+		});
+
+		return payload;
+	} catch (error) {
+		console.error("Token verification failed:", error);
+		throw new Error("Invalid token");
+	}
 }
 
 app.get("/", async (c) => {
@@ -202,9 +223,12 @@ app.get("/auth/google/callback", async (c) => {
 		}
 
 		// Verify the Google ID token
-		const decodedToken = decode(googleTokenData.id_token);
-		const email = decodedToken.payload.email as string;
+		const verifiedPayload = await verifyGoogleIdToken(
+			googleTokenData.id_token,
+			c.env.GOOGLE_CLIENT_ID,
+		);
 
+		const email = verifiedPayload.email as string;
 		if (!email) {
 			return c.json({ error: "Failed to get email" }, 400);
 		}
