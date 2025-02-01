@@ -3,5 +3,8 @@
 	"editor.defaultFormatter": "biomejs.biome",
 	"files.associations": {
 		"*.vars*": "properties"
+	},
+	"[markdown]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	}
 }
