@@ -1,6 +1,6 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "discord-mail-auth",
+	"name": "discord-email-auth",
 	"main": "src/index.ts",
 	"compatibility_date": "2025-02-01",
 	"observability": {

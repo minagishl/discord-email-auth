@@ -1,4 +1,4 @@
-# Discord Mail Auth
+# Discord EMail Auth
 
 This is a lightweight application that assigns roles to specific email addresses using Cloudflare Workers and Hono.
 
@@ -19,8 +19,8 @@ This is a lightweight application that assigns roles to specific email addresses
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/minagishl/discord-mail-auth.git
-   cd discord-mail-auth
+   git clone https://github.com/minagishl/discord-email-auth.git
+   cd discord-email-auth
    ```
 
 2. Install dependencies:

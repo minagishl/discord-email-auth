@@ -1,5 +1,5 @@
 {
-	"name": "discord-mail-auth",
+	"name": "discord-email-auth",
 	"scripts": {
 		"dev": "wrangler dev",
 		"deploy": "wrangler deploy --minify",
