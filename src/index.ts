@@ -23,7 +23,12 @@ type Bindings = {
 const app = new Hono<{ Bindings: Bindings }>();
 
 // Security Header Settings
-app.use(secureHeaders());
+app.use(
+	secureHeaders({
+		xPermittedCrossDomainPolicies: false,
+		xXssProtection: false,
+	}),
+);
 
 app.get("/", async (c: Context) => {
 	const state = await generateState();
