@@ -3,12 +3,13 @@ import { deleteCookie, getCookie } from "hono/cookie";
 
 // Function to generate state for CSRF protection
 export async function generateState(): Promise<string> {
-	const buffer = new Uint8Array(32);
+	const buffer = new Uint8Array(48);
 	crypto.getRandomValues(buffer);
 	const state = Array.from(buffer)
 		.map((b) => b.toString(16).padStart(2, "0"))
 		.join("");
-	return state;
+	const timestamp = Date.now().toString(16);
+	return state + timestamp;
 }
 
 // Validate the CSRF token
