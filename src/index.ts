@@ -1,4 +1,4 @@
-import { Hono } from "hono";
+import { Hono, type Context } from "hono";
 import { sign, verify } from "hono/jwt";
 import { getCookie, setCookie, deleteCookie } from "hono/cookie";
 import { generateState, validateState } from "./utils/csrf";
@@ -21,7 +21,7 @@ type Bindings = {
 
 const app = new Hono<{ Bindings: Bindings }>();
 
-app.get("/", async (c) => {
+app.get("/", async (c: Context) => {
 	const state = await generateState();
 	setCookie(c, "oauth_state", state, {
 		httpOnly: true,
@@ -43,7 +43,7 @@ app.get("/", async (c) => {
 	return c.redirect(url.toString());
 });
 
-app.get("/auth/discord/callback", async (c) => {
+app.get("/auth/discord/callback", async (c: Context) => {
 	const code = c.req.query("code");
 	const state = c.req.query("state");
 
@@ -134,7 +134,7 @@ app.get("/auth/discord/callback", async (c) => {
 	}
 });
 
-app.get("/auth/google/callback", async (c) => {
+app.get("/auth/google/callback", async (c: Context) => {
 	const code = c.req.query("code");
 	const state = c.req.query("state");
 
