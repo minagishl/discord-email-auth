@@ -25,17 +25,13 @@ A serverless application built with Cloudflare Workers and Hono that automates D
 
 1. Create a new application in the [Discord Developer Portal](https://discord.com/developers/applications)
 2. Go to the "OAuth2" section and note down:
-
-- Client ID
-- Client Secret
-
+   - Client ID
+   - Client Secret
 3. Add redirect URI: `http://localhost:8787/auth/callback` (for development)
 4. Create a bot in the "Bot" section and note down the bot token
 5. Enable the following bot permissions:
-
-- Manage Roles
-- View Channels
-
+   - Manage Roles
+   - View Channels
 6. Invite the bot to your server using the OAuth2 URL with the required permissions
 
 ### 2. Google OAuth2 Setup
