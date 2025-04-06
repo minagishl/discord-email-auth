@@ -27,7 +27,7 @@ A serverless application built with Cloudflare Workers and Hono that automates D
 2. Go to the "OAuth2" section and note down:
    - Client ID
    - Client Secret
-3. Add redirect URI: `http://localhost:8787/auth/callback` (for development)
+3. Add redirect URI: `http://localhost:8787/auth/discord/callback` (for development)
 4. Create a bot in the "Bot" section and note down the bot token
 5. Enable the following bot permissions:
    - Manage Roles
